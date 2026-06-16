@@ -1,4 +1,4 @@
-# 🍓 Debian Installation (Raspberry Pi) for IoT, MQTT, Kafka Course
+# Debian Installation (Raspberry Pi) for IoT, MQTT, Kafka Course
 
 > For students installing a Debian-based operating system (e.g., Raspberry Pi OS or Debian ARM) on a Raspberry Pi.
 
@@ -16,13 +16,13 @@
 
 ---
 
-## 2. Hostname Configuration
+## 1. Hostname Configuration
 
 - Hostname: 
 
 ---
 
-## 3. Network Configuration
+## 2. Network Configuration
 
 ### Interfacef Static IP:
 
