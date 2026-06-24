@@ -26,7 +26,7 @@ SensirionI2cSht4x sht4x;
 // NeoPixel
 #define LEDPIN 18
 #define NUMPIXELS 1
-Adafruit_NeoPixel pixels(NUMPIXELS, LEDPIN, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel pixels(NUMPIXELS, LEDPIN, NEO_RGB + NEO_KHZ800);
 
 // กำหนดสถานะตามทฤษฎี IoT ด้วย enum
 enum SystemState {
