@@ -1,0 +1,63 @@
+services:
+  vernemq1:
+    image: vernemq/vernemq
+    container_name: vernemq1.local
+    hostname: vernemq1.local
+    environment:
+      - DOCKER_VERNEMQ_ACCEPT_EULA=yes
+      - DOCKER_VERNEMQ_ALLOW_ANONYMOUS=on
+      - DOCKER_VERNEMQ_NODENAME=vernemq1.local
+      - DOCKER_VERNEMQ_DISCOVERY_NODE=vernemq1.local
+      - DOCKER_VERNEMQ_LISTENER__TCP__ALLOWED_PROTOCOL_VERSIONS=3,4,5,131,132
+      - DOCKER_VERNEMQ_LOG__CONSOLE__LEVEL=info #log.console.level = debug 
+    volumes:
+      - vernemq-etc:/vernemq/etc
+      - vernemq-data:/vernemq/data
+      - vernemq-log:/vernemq/log
+    ports:
+      - "1883:1883"
+      - "8888:8888"   # HTTP API
+      # - "8080:8080"   # WebSocket
+    networks:
+      - iot 
+
+  prometheus:
+      image: prom/prometheus:latest
+      container_name: prometheus
+      volumes:
+        - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+        - prometheus-data:/prometheus
+      ports:
+        - "9090:9090"
+      networks:
+        - iot
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    user: '0'
+    volumes:
+      - ./grafana/data:/var/lib/grafana
+      - ./grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./grafana/datasources:/etc/grafana/provisioning/datasources
+    environment:
+      - GF_SECURITY_ADMIN_USER=${ADMIN_USER:-admin}
+      - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
+      # - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-worldmap-panel,grafana-piechart-panel
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_SECURITY_ANGULAR_SUPPORT_ENABLED=True
+      - GF_FEATURE_TOGGLES_ANGULARDEPRECATIONUI=False
+    networks:
+      - iot
+    ports:
+      - '3000:3000'
+
+networks:
+  iot:
+    driver: bridge
+
+volumes:
+  vernemq-data:
+  vernemq-log:
+  vernemq-etc:
+  prometheus-data:

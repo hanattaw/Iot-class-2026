@@ -1,0 +1,7 @@
+global:
+  scrape_interval: 5s
+
+scrape_configs:
+  - job_name: 'vernemq'
+    static_configs:
+      - targets: ['vernemq1.local:8888'] #Exposes metrics for prometheus to scrape
