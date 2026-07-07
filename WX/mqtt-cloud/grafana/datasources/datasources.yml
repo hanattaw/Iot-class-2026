@@ -5,14 +5,14 @@ datasources:
     type: prometheus
     url: http://prometheus:9090
     access: proxy
-  - name: influxDB
-    type: influxdb
-    access: proxy
-    url: http://influxdb:8086
-    isDefault: true
-    jsonData:
-      version: Flux
-      organization: my-org
-      defaultBucket:
-    secureJsonData:
-      token: mytoken
+  # - name: influxDB
+  #   type: influxdb
+  #   access: proxy
+  #   url: http://influxdb:8086
+  #   isDefault: true
+  #   jsonData:
+  #     version: Flux
+  #     organization: my-org
+  #     defaultBucket:
+  #   secureJsonData:
+  #     token: mytoken
