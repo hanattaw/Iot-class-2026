@@ -14,15 +14,16 @@ sudo apt-get update
 # 3. และสั่งติดตั้ง Telegraf
 sudo apt-get install telegraf
 
-sudo systemctl start telegraf
-sudo systemctl enable telegraf
-sudo systemctl status telegraf
-
 # สำรองไฟล์เก่าเก็บไว้ก่อน
 sudo mv /etc/telegraf/telegraf.conf /etc/telegraf/telegraf.conf.bak
 
 # เปิดไฟล์ใหม่ขึ้นมาแก้ไข
 sudo nano /etc/telegraf/telegraf.conf
+
+# เปิด ระบบ และทดสอบดู สนเ
+sudo systemctl start telegraf
+sudo systemctl enable telegraf
+sudo systemctl status telegraf
 
 # ดู log
 sudo journalctl -u telegraf -n 20 -f
@@ -94,7 +95,7 @@ sudo journalctl -u telegraf -n 20 -f
 # 4. OUTPUT: ส่งข้อมูลไปยัง MQTT Broker
 # ==================================================================
 [[outputs.mqtt]]
-  servers = ["tcp://vernemq1.local:1883"]
+  servers = ["tcp://172.16.2.117:1883"]
   
   # ดึงค่าจาก Tag "client_id" ที่ถูกสร้างจากขั้นตอน processors.regex มาใช้งาน
   topic = 'v1/{{ .Tag "client_id" }}'
