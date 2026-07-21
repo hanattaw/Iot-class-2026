@@ -16,7 +16,7 @@ KAFKA_TOPIC = "university.sensors.telemetry"
 INFLUX_URL = "http://localhost:8086"
 INFLUX_TOKEN = "mytoken"
 INFLUX_ORG = "my-org"
-INFLUX_BUCKET = "iot_data"
+INFLUX_BUCKET = "iot_data_stream"
 
 # ==================================================================
 #  2. เริ่มต้นโมเดลบำรุงรักษาเชิงพยากรณ์ (ML Model Init)
@@ -65,7 +65,7 @@ consumer = KafkaConsumer(
 )
 
 print("\n==================================================================")
-print(" 🚀 Real-time Predictive Maintenance AI Service [RUNNING]")
+print("   Real-time Predictive Maintenance AI Service [RUNNING]")
 print(" - เชื่อมโยงสถิติสภาพแวดล้อมและพฤติกรรมพัดลมเพื่อลดการพังเสียหาย")
 print("==================================================================")
 
@@ -82,7 +82,7 @@ for message in consumer:
         temp = payload.get("temperature")
         humid = payload.get("humidity")
         
-        # 💡 ในพาร์ทการประยุกต์ใช้งานจริง บอร์ด ESP32 ของเด็กๆ จะส่งค่าพฤติกรรมทางฟิสิกส์ของพัดลมเพิ่มเติมเข้ามาใน JSON
+        #  ในพาร์ทการประยุกต์ใช้งานจริง บอร์ด ESP32 ของเด็กๆ จะส่งค่าพฤติกรรมทางฟิสิกส์ของพัดลมเพิ่มเติมเข้ามาใน JSON
         # หากเซนเซอร์หน้างานไม่มีการวัดจริง ตัวสคริปต์นี้จะทำหน้าที่สุ่มเลียนแบบความฝืดเชิงสหสัมพันธ์ (Simulated Correlation)
         fan_current = payload.get("fan_current")
         fan_vibration = payload.get("fan_vibration")

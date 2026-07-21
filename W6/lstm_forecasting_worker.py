@@ -19,7 +19,7 @@ KAFKA_TOPIC = "university.sensors.telemetry"
 INFLUX_URL = "http://localhost:8086"
 INFLUX_TOKEN = "mytoken"
 INFLUX_ORG = "my-org"
-INFLUX_BUCKET = "iot_data"
+INFLUX_BUCKET = "iot_data_stream"
 
 # ขนาดความยาวของข้อมูลประวัติย้อนหลังที่โมเดล LSTM ต้องการ (Window Size)
 # สมมติส่งข้อมูลทุกๆ 5 นาที ย้อนหลัง 12 จุดจะเท่ากับ 1 ชั่วโมงล่าสุด
@@ -74,7 +74,7 @@ consumer = KafkaConsumer(
 )
 
 print("==================================================================")
-print(f" 🚀 Real-time LSTM Forecasting Service [RUNNING]")
+print(f"Real-time LSTM Forecasting Service [RUNNING]")
 print(f" - กำลังรอข้อมูลเพื่อสะสมประวัติรายอุปกรณ์ (Window Size: {WINDOW_SIZE} จุด)")
 print(f" - ขอบเขตการทำนายล่วงหน้า: {PREDICTION_OFFSET_MINUTES} นาทีข้างหน้า")
 print("==================================================================")
@@ -125,7 +125,7 @@ for message in consumer:
                 # นำข้อมูลวันที่อนาคตมาทำสตริงเพื่อการดีบัก
                 future_date_str = datetime.fromtimestamp(future_timestamp, tz=timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
                 
-                print(f"   🎯 [LSTM PREDICTED] ทำนายอุณหภูมิ ณ เวลา {future_date_str}")
+                print(f"    [LSTM PREDICTED] ทำนายอุณหภูมิ ณ เวลา {future_date_str}")
                 print(f"      -> ประวัติอุณหภูมิ 1 ชั่วโมงล่าสุด: {list(np.round(buffer, 2))}")
                 print(f"      -> คาดการณ์อุณหภูมิอีก 30 นาทีข้างหน้า: {predicted_temp_future} °C")
                 
@@ -147,4 +147,4 @@ for message in consumer:
                 print(f"   (ระบบกำลังรวบรวมประวัติ รอเพิ่มอีก {points_needed} จุด เพื่อเริ่มวิเคราะห์ด้วยปัญญาประดิษฐ์)")
                 
     except Exception as e:
-        print(f"❌ เกิดข้อผิดพลาดในการรันสคริปต์ทำนาย LSTM: {e}")
+        print(f" เกิดข้อผิดพลาดในการรันสคริปต์ทำนาย LSTM: {e}")

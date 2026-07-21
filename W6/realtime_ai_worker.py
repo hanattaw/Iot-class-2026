@@ -19,7 +19,7 @@ KAFKA_TOPIC = "university.sensors.telemetry"
 INFLUX_URL = "http://localhost:8086"
 INFLUX_TOKEN = "mytoken"               # อ้างอิงตามค่าเริ่มต้นใน Docker Compose
 INFLUX_ORG = "my-org"
-INFLUX_BUCKET = "iot_data"              # บักเก็ตสำหรับเก็บข้อมูลวิเคราะห์
+INFLUX_BUCKET = "iot_data_stream"              # บักเก็ตสำหรับเก็บข้อมูลวิเคราะห์
 
 # ==================================================================
 #  2. เริ่มต้นระบบประมวลผลโมเดล Machine Learning (Isolation Forest)
@@ -90,7 +90,7 @@ try:
     write_api = db_client.write_api(write_options=SYNCHRONOUS)
     print("[InfluxDB] เชื่อมต่อระบบเขียนข้อมูลสำเร็จ")
 except Exception as e:
-    print(f"❌ [InfluxDB Error] ไม่สามารถเชื่อมต่อได้: {e}")
+    print(f" [InfluxDB Error] ไม่สามารถเชื่อมต่อได้: {e}")
     exit(1)
 
 # เชื่อมต่อคอยฟังข้อมูลจาก Apache Kafka
@@ -101,16 +101,16 @@ try:
         group_id="ai-realtime-processor-group",
         auto_offset_reset="latest"
     )
-    print(f"[Kafka] สับตะกร้ารอรับข้อมูลจาก Topic: '{KAFKA_TOPIC}' สำเร็จ")
+    print(f"[Kafka] รอรับข้อมูลจาก Topic: '{KAFKA_TOPIC}' สำเร็จ")
 except Exception as e:
-    print(f"❌ [Kafka Error] ไม่สามารถเชื่อมต่อ Broker ได้: {e}")
+    print(f" [Kafka Error] ไม่สามารถเชื่อมต่อ Broker ได้: {e}")
     exit(1)
 
 # ==================================================================
 #  5. ประมวลผลลูปข้อมูลเรียลไทม์แบบไร้รอยต่อ (Event Loop)
 # ==================================================================
 print("\n==================================================================")
-print(" 🚀 Real-time AI & Soft Sensor Service [RUNNING]")
+print("  Real-time AI & Soft Sensor Service [RUNNING]")
 print(" - กำลังรอประมวลผลข้อมูลสตรีมมิ่งสดจากเครือข่ายคาฟก้า...")
 print("==================================================================")
 
@@ -153,9 +153,9 @@ for message in consumer:
             print(f"   └─► [COMPUTED] DewPoint: {dew_point}°C | VPD: {vpd} kPa | Altitude: {altitude} m")
             
             if anomaly_status == 1:
-                print(f"   └─► [AI STATUS] ⚠️ ตรวจพบอุณหภูมิผิดปกติในพื้นที่! (Anomaly Status = 1)")
+                print(f"   └─► [AI STATUS]  ตรวจพบอุณหภูมิผิดปกติในพื้นที่! (Anomaly Status = 1)")
             else:
-                print(f"   └─► [AI STATUS] ✅ สภาพแวดล้อมปกติ")
+                print(f"   └─► [AI STATUS]  สภาพแวดล้อมปกติ")
 
             # --- ขั้นตอนที่ 3: บันทึกข้อมูลและค่า Soft Sensors/AI ลงสู่ InfluxDB ---
             point = Point("sensor_analytics") \
@@ -181,4 +181,4 @@ for message in consumer:
             print(f"   └─► [InfluxDB] เขียนบันทึกข้อมูลวิเคราะห์ลง Bucket สำเร็จ!")
             
     except Exception as e:
-        print(f"❌ เกิดข้อผิดพลาดในขั้นตอนประมวลผล: {e}")
+        print(f" เกิดข้อผิดพลาดในขั้นตอนประมวลผล: {e}")
